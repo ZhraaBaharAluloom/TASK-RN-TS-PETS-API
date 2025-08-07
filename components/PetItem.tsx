@@ -13,10 +13,9 @@ interface PetItemProps {
   pet: {
     id: number;
     name: string;
-    description: string;
     type: string;
     image: string;
-    image2: string;
+    adopted: boolean;
   };
   setDisplayPets: (pets: any[]) => void;
   displayPets: any[];
@@ -31,14 +30,12 @@ const PetItem = ({ pet, setDisplayPets, displayPets }: PetItemProps) => {
           <Image source={{ uri: image }} style={styles.image} />
 
           <Text style={styles.name}>{pet.name}</Text>
-
-          <Text style={styles.description}>{pet.description}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.petButton}
-            onPress={() => setImage(pet.image2)}
+            onPress={() => setImage(pet.image)}
           >
             <Text style={styles.buttonText}>Pet</Text>
           </TouchableOpacity>
