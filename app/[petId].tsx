@@ -25,10 +25,9 @@ const PetDetails = () => {
   }, [petId]);
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{pet?.name}</Text>
+      <Text style={styles.name}>{pet?.name || "Loading..."}</Text>
       <Image source={{ uri: pet?.image }} style={styles.image} />
-      <Text style={styles.description}> {pet?.description}</Text>
-      <Text style={styles.type}>Type: {pet?.type}</Text>
+      <Text style={styles.type}>Type: {pet?.type || "Loading..."}</Text>
 
       <View>
         <TouchableOpacity style={styles.button}>
