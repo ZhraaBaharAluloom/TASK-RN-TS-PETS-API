@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import axios from "axios";
 
 interface AddPetModal {
   setModalVisible: (isVisible: boolean) => void;
@@ -16,6 +18,33 @@ interface AddPetModal {
 }
 
 const AddPet = ({ setModalVisible, isVisible }: AddPetModal) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [image, setImage] = useState("");
+  const [adopted, setAdopted] = useState("");
+
+  const handleAddPet = async () => {
+    const adopt = 0;
+    try {
+      await axios.post(
+        "https://pets-react-query-backend.eapi.joincoded.com/pets",
+        {
+          name,
+          description,
+          type,
+          image,
+          adopted: adopt,
+        }
+      );
+      Alert.alert("Pet added successfully!");
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Failed to add pet:", error);
+      Alert.alert("Failed to add pet.");
+    }
+  };
+
   return (
     <Modal
       style={styles.modalStyle}
@@ -31,15 +60,41 @@ const AddPet = ({ setModalVisible, isVisible }: AddPetModal) => {
               size={24}
               color="black"
               style={styles.closeIcon}
+              onPress={() => setModalVisible(false)}
             />
             <Text style={styles.title}>Add Your Pet! </Text>
-            <TextInput placeholder="Name" style={styles.input} />
-            <TextInput placeholder="Description" style={styles.input} />
-            <TextInput placeholder="Type" style={styles.input} />
-            <TextInput placeholder="Image" style={styles.input} />
-            <TextInput placeholder="Adopted" style={styles.input} />
+            <TextInput
+              placeholder="Name"
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+            />
+            <TextInput
+              placeholder="Description"
+              style={styles.input}
+              value={description}
+              onChangeText={setDescription}
+            />
+            <TextInput
+              placeholder="Type"
+              style={styles.input}
+              value={type}
+              onChangeText={setType}
+            />
+            <TextInput
+              placeholder="Image"
+              style={styles.input}
+              value={image}
+              onChangeText={setImage}
+            />
+            <TextInput
+              placeholder="Adopted"
+              style={styles.input}
+              value={adopted}
+              onChangeText={setAdopted}
+            />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleAddPet}>
               <Text style={styles.buttonText}>Add Pet</Text>
             </TouchableOpacity>
           </View>
@@ -62,7 +117,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-
     justifyContent: "center",
     backgroundColor: "#f9e3be",
   },
@@ -90,7 +144,7 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: "absolute",
-    top: 100,
+    top: 40,
     right: 10,
   },
 });

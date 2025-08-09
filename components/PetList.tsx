@@ -22,8 +22,8 @@ const PetList = () => {
   const [type, setType] = useState("");
   const [displayPets, setDisplayPets] = useState<NewData[]>([]);
 
-  const getInfo = () => {
-    const NewList = axios
+  const getInfo = async () => {
+    const NewList = await axios
       .get("https://pets-react-query-backend.eapi.joincoded.com/pets")
       .then((response) => {
         setDisplayPets(response.data);
