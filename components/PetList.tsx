@@ -5,14 +5,33 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import pets from "@/data/pets";
+import React, { useEffect, useState } from "react";
 import PetItem from "./PetItem";
+import axios from "axios";
 
+export type NewData = {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  image: string;
+  image2: string;
+};
 const PetList = () => {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
-  const [displayPets, setDisplayPets] = useState(pets);
+  const [displayPets, setDisplayPets] = useState<NewData[]>([]);
+
+  const getInfo = async () => {
+    const NewList = await axios
+      .get("https://pets-react-query-backend.eapi.joincoded.com/pets")
+      .then((response) => {
+        setDisplayPets(response.data);
+      });
+  };
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const petList = displayPets
     .filter((pet) => pet.name.toLowerCase().includes(search.toLowerCase()))
@@ -23,6 +42,14 @@ const PetList = () => {
         pet={pet}
         setDisplayPets={setDisplayPets}
         displayPets={displayPets}
+        NewData={{
+          id: 0,
+          name: "",
+          description: "",
+          type: "",
+          image: "",
+          image2: "",
+        }}
       />
     ));
   return (

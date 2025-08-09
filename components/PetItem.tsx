@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Link } from "expo-router";
+import { NewData } from "@/types/pet";
 
 interface PetItemProps {
   pet: {
@@ -18,6 +19,7 @@ interface PetItemProps {
     image: string;
     image2: string;
   };
+  NewData: NewData;
   setDisplayPets: (pets: any[]) => void;
   displayPets: any[];
 }
