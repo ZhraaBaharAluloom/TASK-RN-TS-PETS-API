@@ -7,8 +7,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import axios from "axios";
 
 interface AddPetModal {
   setModalVisible: (isVisible: boolean) => void;
@@ -16,6 +17,24 @@ interface AddPetModal {
 }
 
 const AddPet = ({ setModalVisible, isVisible }: AddPetModal) => {
+  const [petData, setPetData] = useState({
+    name: "",
+    type: "",
+    image: "",
+  });
+  const createPet = async () => {
+    const newPet = {
+      name: petData.name,
+      type: petData.type,
+      image: petData.image,
+      adopted: 0,
+    };
+
+    await axios.post(
+      "https://pets-react-query-backend.eapi.joincoded.com/pets",
+      newPet
+    );
+  };
   return (
     <Modal
       style={styles.modalStyle}
@@ -33,13 +52,26 @@ const AddPet = ({ setModalVisible, isVisible }: AddPetModal) => {
               style={styles.closeIcon}
             />
             <Text style={styles.title}>Add Your Pet! </Text>
-            <TextInput placeholder="Name" style={styles.input} />
-            <TextInput placeholder="Description" style={styles.input} />
-            <TextInput placeholder="Type" style={styles.input} />
-            <TextInput placeholder="Image" style={styles.input} />
-            <TextInput placeholder="Adopted" style={styles.input} />
+            <TextInput
+              placeholder="Name"
+              style={styles.input}
+              value={petData.name}
+              onChangeText={(text) => setPetData({ ...petData, name: text })}
+            />
+            <TextInput
+              placeholder="Type"
+              style={styles.input}
+              value={petData.type}
+              onChangeText={(text) => setPetData({ ...petData, type: text })}
+            />
+            <TextInput
+              placeholder="Image"
+              style={styles.input}
+              value={petData.image}
+              onChangeText={(text) => setPetData({ ...petData, image: text })}
+            />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={createPet}>
               <Text style={styles.buttonText}>Add Pet</Text>
             </TouchableOpacity>
           </View>
